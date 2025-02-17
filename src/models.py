@@ -24,11 +24,23 @@ class Follower(Base):
     user_from_id : Mapped[int] = Column(Integer, ForeignKey(User.id), primary_key = True, nullable=False)
     user_to_id : Mapped[int] = Column(Integer, ForeignKey(User.id), nullable=False)
 
+    def to_dict(self):
+        return {
+            "user_from_id": self.user_from_id,
+            "user_to_id": self.user_to_id
+        }
+
 class Post(Base):
     __tablename__ = "Post"
 
     id : Mapped[int] = Column(Integer, primary_key = True)
     user_id : Mapped[int] = Column(Integer)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id
+        }
 
 class MediaType(enum.Enum):
     PHOTO = 1
@@ -45,13 +57,24 @@ class Media(Base):
     post_id : Mapped[int] = Column(Integer, ForeignKey(Post.id))
 
     def to_dict(self):
-        return {}
+        return {
+            "id": self.id,
+            "type": self.type,
+            "url": self.url,
+            "post_id": self.post_id
+        }
     
 class Comment(Base):
     __tablename__ = "Comment"
 
     id : Mapped[int] = mapped_column(primary_key = True)
     author_id : Mapped[int] = Column(Integer, ForeignKey(User.id))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "author_id": self.author_id
+        }
 
 
 ## Draw from SQLAlchemy base
